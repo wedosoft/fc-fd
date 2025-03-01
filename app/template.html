@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://static.freshdev.io/fdk/2.0/assets/fresh_client.js"></script>
+  <script>
+    function renderData(error, data) {
+      if (error) {
+        document.getElementById("result").innerText = "Error: " + error.message;
+      } else if (data.contact) {
+        document.getElementById("result").innerText = 
+          `Name: ${data.contact.name}\nEmail: ${data.contact.email}`;
+      } else {
+        document.getElementById("result").innerText = data.message;
+      }
+    }
+  </script>
+</head>
+<body>
+  <div id="result">Waiting for call...</div>
+</body>
+</html>

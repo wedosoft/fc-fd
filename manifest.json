@@ -1,0 +1,29 @@
+{
+  "platform-version": "2.3",
+  "product": {
+    "freshcaller": {
+      "location": {
+        "notification_card": {
+          "url": "template.html",
+          "icon": "icon.svg"
+        }
+      },
+      "events": {
+        "onCallCreate": {
+          "handler": "onCallCreateHandler"
+        }
+      }
+    }
+  },
+  "allowed-domains": [
+    "https://*.freshdesk.com",
+    "https://*.myfreshworks.com"
+  ],
+  "engines": {
+    "node": "18.18.0",
+    "fdk": "9.3.1"
+  },
+  "app": {
+    "tracking_id": "t5kda5vd3asj8l4dmrep"
+  }
+}
