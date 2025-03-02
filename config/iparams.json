@@ -2,7 +2,7 @@
     "domainName": {
       "display_name": "domain_name",
       "description": "Please enter your domain name",
-      "type": "text",
+      "type": "domain",
       "type_attributes": {
         "product": "freshdesk"
       },

@@ -3,7 +3,7 @@
   "product": {
     "freshcaller": {
       "location": {
-        "notification_card": {
+        "widget_conversation_card": {
           "url": "template.html",
           "icon": "icon.svg"
         }
@@ -17,7 +17,10 @@
   },
   "allowed-domains": [
     "https://*.freshdesk.com",
-    "https://*.myfreshworks.com"
+    "https://*.myfreshworks.com",
+    "http://localhost:10001",
+    "https://localhost:10001",
+    "https://cdn.freshdev.io"
   ],
   "engines": {
     "node": "18.18.0",

@@ -2,6 +2,174 @@
 <html>
 <head>
   <script src="https://static.freshdev.io/fdk/2.0/assets/fresh_client.js"></script>
+  <script src="app.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 10px;
+    }
+    #result {
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+    }
+    #debug-panel {
+      margin-top: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    #debug-header {
+      background-color: #f0f0f0;
+      padding: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+    }
+    #debug-content {
+      max-height: 200px;
+      overflow-y: auto;
+      padding: 10px;
+      font-family: monospace;
+      font-size: 12px;
+      white-space: pre-wrap;
+      background-color: #fafafa;
+    }
+    .log-entry {
+      margin-bottom: 5px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 5px;
+    }
+    .log-time {
+      color: #888;
+      font-size: 10px;
+    }
+    .log-error {
+      color: #d32f2f;
+    }
+    #toggle-debug {
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 3px 8px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .hide {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h3>전화 감지 테스트</h3>
+  <div id="result">전화 대기 중...</div>
+  
+  <!-- 디버그 패널 -->
+  <div id="debug-panel">
+    <div id="debug-header">
+      <span><strong>디버그 콘솔</strong></span>
+      <button id="toggle-debug">접기</button>
+    </div>
+    <div id="debug-content"></div>
+  </div>
+
+  <script>
+    // 디버그 콘솔 로그 표시 함수
+    (function() {
+      const debugContent = document.getElementById('debug-content');
+      const toggleButton = document.getElementById('toggle-debug');
+      let logs = [];
+      
+      // 접기/펼치기 기능
+      toggleButton.addEventListener('click', function() {
+        const content = document.getElementById('debug-content');
+        if (content.classList.contains('hide')) {
+          content.classList.remove('hide');
+          this.textContent = '접기';
+        } else {
+          content.classList.add('hide');
+          this.textContent = '펼치기';
+        }
+      });
+      
+      // 원본 콘솔 메서드 저장
+      const originalLog = console.log;
+      const originalError = console.error;
+      
+      // 콘솔 로그 오버라이드
+      console.log = function() {
+        // 원본 콘솔 호출
+        originalLog.apply(console, arguments);
+        
+        // 디버그 패널에 로그 추가
+        addLogToPanel('log', Array.from(arguments).join(' '));
+      };
+      
+      // 콘솔 에러 오버라이드
+      console.error = function() {
+        // 원본 콘솔 호출
+        originalError.apply(console, arguments);
+        
+        // 디버그 패널에 에러 추가
+        addLogToPanel('error', Array.from(arguments).join(' '));
+      };
+      
+      // 디버그 패널에 로그 추가 함수
+      function addLogToPanel(type, message) {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString() + '.' + now.getMilliseconds().toString().padStart(3, '0');
+        
+        // 로그 항목 생성
+        const logEntry = document.createElement('div');
+        logEntry.className = 'log-entry' + (type === 'error' ? ' log-error' : '');
+        
+        // 시간 추가
+        const timeSpan = document.createElement('span');
+        timeSpan.className = 'log-time';
+        timeSpan.textContent = timeString + ': ';
+        logEntry.appendChild(timeSpan);
+        
+        // 메시지 추가 (객체인 경우 JSON으로 변환)
+        let logMessage = message;
+        if (typeof message === 'object') {
+          try {
+            logMessage = JSON.stringify(message, null, 2);
+          } catch (e) {
+            logMessage = String(message);
+          }
+        }
+        logEntry.appendChild(document.createTextNode(logMessage));
+        
+        // 디버그 패널에 추가
+        debugContent.appendChild(logEntry);
+        
+        // 스크롤을 아래로 이동
+        debugContent.scrollTop = debugContent.scrollHeight;
+        
+        // 로그 저장 (최대 100개)
+        logs.push({ type, message: logMessage, time: timeString });
+        if (logs.length > 100) {
+          logs.shift();
+        }
+      }
+      
+      // 초기 로그 메시지
+      console.log("[DEBUG] 디버그 콘솔 초기화됨");
+    })();
+  </script>
+</body>
+</html>
+
+
+
+<!-- This is the template that will be rendered in the iframe. -->
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://static.freshdev.io/fdk/2.0/assets/fresh_client.js"></script>
   <script>
     function renderData(error, data) {
       if (error) {
@@ -19,3 +187,4 @@
   <div id="result">Waiting for call...</div>
 </body>
 </html>
+-->
